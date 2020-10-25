@@ -49,7 +49,7 @@ import src.com.zerodhatech.models.Tick;
  */
 public class KiteTicker {
 
-    private String wsuri ;
+    private String wsuri ="wss://ws.zerodha.com/?api_key=kitefront&user_id=PR5116&enctoken=Mo5nTTqLEKnVWoIsWwnBJIhsLPDqKfDwaDCQxNpAejtaeXn7HbKC0X3nxMI9G0LSpGakJAsaK5Hs991m%2BwaioLUkkmeYkg%3D%3D&uid=1603628095438&user-agent=kite3-web&version=2.6.1";;
     private OnTicks onTickerArrivalListener;
     private OnConnect onConnectedListener;
     private OnDisconnect onDisconnectedListener;
@@ -95,9 +95,7 @@ public class KiteTicker {
      * @param apiKey is the api key of the app which is received after creating an app on developers console.*/
     public KiteTicker(String accessToken, String apiKey) {
 
-        if (wsuri == null) {
-            createUrl(accessToken, apiKey);
-        }
+        
 
         try {
             ws = new WebSocketFactory().createSocket(wsuri);

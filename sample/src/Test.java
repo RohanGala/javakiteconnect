@@ -1,12 +1,16 @@
-import com.neovisionaries.ws.client.WebSocketException;
-import com.zerodhatech.kiteconnect.KiteConnect;
-import com.zerodhatech.kiteconnect.kitehttp.SessionExpiryHook;
-import com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
-import com.zerodhatech.models.User;
-import org.json.JSONException;
+package src;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+import org.json.JSONException;
+
+import com.neovisionaries.ws.client.WebSocketException;
+
+import src.com.zerodhatech.kiteconnect.KiteConnect;
+import src.com.zerodhatech.kiteconnect.kitehttp.SessionExpiryHook;
+import src.com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
+import src.com.zerodhatech.models.User;
 
 /**
  * Created by sujith on 7/10/16.

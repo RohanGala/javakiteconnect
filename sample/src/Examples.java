@@ -1,18 +1,48 @@
-import com.neovisionaries.ws.client.WebSocketException;
-import com.zerodhatech.kiteconnect.KiteConnect;
-import com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
-import com.zerodhatech.kiteconnect.utils.Constants;
-import com.zerodhatech.models.*;
-import com.zerodhatech.ticker.*;
-import org.json.JSONObject;
-import com.zerodhatech.models.Margin;
+package src;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import org.json.JSONObject;
+
+import com.neovisionaries.ws.client.WebSocketException;
+
+import src.com.zerodhatech.kiteconnect.KiteConnect;
+import src.com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
+import src.com.zerodhatech.kiteconnect.utils.Constants;
+import src.com.zerodhatech.models.GTT;
+import src.com.zerodhatech.models.GTTParams;
+import src.com.zerodhatech.models.HistoricalData;
+import src.com.zerodhatech.models.Holding;
+import src.com.zerodhatech.models.Instrument;
+import src.com.zerodhatech.models.MFHolding;
+import src.com.zerodhatech.models.MFInstrument;
+import src.com.zerodhatech.models.MFOrder;
+import src.com.zerodhatech.models.MFSIP;
+import src.com.zerodhatech.models.Margin;
+import src.com.zerodhatech.models.MarginCalculationData;
+import src.com.zerodhatech.models.MarginCalculationParams;
+import src.com.zerodhatech.models.Order;
+import src.com.zerodhatech.models.OrderParams;
+import src.com.zerodhatech.models.Position;
+import src.com.zerodhatech.models.Profile;
+import src.com.zerodhatech.models.Quote;
+import src.com.zerodhatech.models.Tick;
+import src.com.zerodhatech.models.Trade;
+import src.com.zerodhatech.models.TriggerRange;
+import src.com.zerodhatech.ticker.KiteTicker;
+import src.com.zerodhatech.ticker.OnConnect;
+import src.com.zerodhatech.ticker.OnDisconnect;
+import src.com.zerodhatech.ticker.OnError;
+import src.com.zerodhatech.ticker.OnOrderUpdate;
+import src.com.zerodhatech.ticker.OnTicks;
 
 /**
  * Created by sujith on 15/10/16.
@@ -512,7 +542,7 @@ public class Examples {
     }
 
     /** Demonstrates com.zerodhatech.ticker connection, subcribing for instruments, unsubscribing for instruments, set mode of tick data, com.zerodhatech.ticker disconnection*/
-    public void tickerUsage(KiteConnect kiteConnect, ArrayList<Long> tokens) throws IOException, WebSocketException, KiteException {
+    public void tickerUsage(KiteConnect kiteConnect, final ArrayList<Long> tokens) throws IOException, WebSocketException, KiteException {
         /** To get live price use websocket connection.
          * It is recommended to use only one websocket connection at any point of time and make sure you stop connection, once user goes out of app.
          * custom url points to new endpoint which can be used till complete Kite Connect 3 migration is done. */
