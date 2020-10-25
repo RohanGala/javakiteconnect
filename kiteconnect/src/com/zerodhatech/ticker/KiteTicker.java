@@ -1,19 +1,4 @@
-package com.zerodhatech.ticker;
-
-/**
- * Created by H1ccup on 10/09/16.
- */
-
-import com.google.gson.*;
-import com.neovisionaries.ws.client.*;
-import com.zerodhatech.kiteconnect.Routes;
-import com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
-import com.zerodhatech.models.Depth;
-import com.zerodhatech.models.Order;
-import com.zerodhatech.models.Tick;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+package src.com.zerodhatech.ticker;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -21,7 +6,42 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+/**
+ * Created by H1ccup on 10/09/16.
+ */
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.neovisionaries.ws.client.WebSocket;
+import com.neovisionaries.ws.client.WebSocketAdapter;
+import com.neovisionaries.ws.client.WebSocketException;
+import com.neovisionaries.ws.client.WebSocketFactory;
+import com.neovisionaries.ws.client.WebSocketFrame;
+
+import src.com.zerodhatech.kiteconnect.Routes;
+import src.com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
+import src.com.zerodhatech.models.Depth;
+import src.com.zerodhatech.models.Order;
+import src.com.zerodhatech.models.Tick;
 
 /**
  * Ticker provider sends tokens to com.zerodhatech.com.zerodhatech.ticker server and get ticks from com.zerodhatech.com.zerodhatech.ticker server. Ticker server sends data in bytes. This Class

@@ -1,4 +1,4 @@
-package com.zerodhatech.models;
+package src.com.zerodhatech.models;
 
 import com.google.gson.*;
 import com.google.gson.annotations.SerializedName;

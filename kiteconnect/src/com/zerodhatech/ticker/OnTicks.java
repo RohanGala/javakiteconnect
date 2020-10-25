@@ -1,8 +1,8 @@
-package com.zerodhatech.ticker;
-
-import com.zerodhatech.models.Tick;
+package src.com.zerodhatech.ticker;
 
 import java.util.ArrayList;
+
+import src.com.zerodhatech.models.Tick;
 
 /**
  * Callback to listen to com.zerodhatech.ticker websocket on tick arrival event.

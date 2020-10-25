@@ -1,12 +1,20 @@
-package com.zerodhatech.kiteconnect.kitehttp;
+package src.com.zerodhatech.kiteconnect.kitehttp;
 
-import com.zerodhatech.kiteconnect.KiteConnect;
-import com.zerodhatech.kiteconnect.kitehttp.exceptions.*;
-import okhttp3.Response;
+import java.io.IOException;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
+import okhttp3.Response;
+import src.com.zerodhatech.kiteconnect.KiteConnect;
+import src.com.zerodhatech.kiteconnect.kitehttp.exceptions.DataException;
+import src.com.zerodhatech.kiteconnect.kitehttp.exceptions.GeneralException;
+import src.com.zerodhatech.kiteconnect.kitehttp.exceptions.InputException;
+import src.com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
+import src.com.zerodhatech.kiteconnect.kitehttp.exceptions.NetworkException;
+import src.com.zerodhatech.kiteconnect.kitehttp.exceptions.OrderException;
+import src.com.zerodhatech.kiteconnect.kitehttp.exceptions.PermissionException;
+import src.com.zerodhatech.kiteconnect.kitehttp.exceptions.TokenException;
 
 /**
  * Response handler for handling all the responses.

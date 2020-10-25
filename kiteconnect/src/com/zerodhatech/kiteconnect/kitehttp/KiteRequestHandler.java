@@ -1,17 +1,24 @@
-package com.zerodhatech.kiteconnect.kitehttp;
-
-import com.zerodhatech.kiteconnect.KiteConnect;
-import com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
-import okhttp3.*;
-import okhttp3.logging.HttpLoggingInterceptor;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+package src.com.zerodhatech.kiteconnect.kitehttp;
 
 import java.io.IOException;
 import java.net.Proxy;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import okhttp3.FormBody;
+import okhttp3.HttpUrl;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
+import src.com.zerodhatech.kiteconnect.KiteConnect;
+import src.com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
 
 /**
  * Request handler for all Http requests

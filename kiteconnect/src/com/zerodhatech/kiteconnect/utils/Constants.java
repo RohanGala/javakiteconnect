@@ -1,4 +1,4 @@
-package com.zerodhatech.kiteconnect.utils;
+package src.com.zerodhatech.kiteconnect.utils;
 
 /**
  * Contains all the Strings that are being used in the Kite Connect library.

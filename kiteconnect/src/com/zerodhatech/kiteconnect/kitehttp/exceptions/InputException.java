@@ -1,4 +1,4 @@
-package com.zerodhatech.kiteconnect.kitehttp.exceptions;
+package src.com.zerodhatech.kiteconnect.kitehttp.exceptions;
 
 /**
  * Represents user input errors such as missing and invalid parameters.

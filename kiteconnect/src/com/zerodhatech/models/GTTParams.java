@@ -1,4 +1,4 @@
-package com.zerodhatech.models;
+package src.com.zerodhatech.models;
 
 import java.util.List;
 

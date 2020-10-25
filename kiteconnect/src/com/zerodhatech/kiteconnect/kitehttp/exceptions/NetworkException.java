@@ -1,4 +1,4 @@
-package com.zerodhatech.kiteconnect.kitehttp.exceptions;
+package src.com.zerodhatech.kiteconnect.kitehttp.exceptions;
 
 /**
  * Represents a network issue between Kite and the backend Order Management System (OMS).

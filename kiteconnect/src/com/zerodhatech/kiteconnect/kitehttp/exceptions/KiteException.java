@@ -1,4 +1,4 @@
-package com.zerodhatech.kiteconnect.kitehttp.exceptions;
+package src.com.zerodhatech.kiteconnect.kitehttp.exceptions;
 
 /**
  * This is the base exception class which has a publicly accessible message and code that

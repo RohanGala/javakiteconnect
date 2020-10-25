@@ -1,4 +1,4 @@
-package com.zerodhatech.kiteconnect.kitehttp.exceptions;
+package src.com.zerodhatech.kiteconnect.kitehttp.exceptions;
 
 /**
  * Exceptions raised when invalid data is returned from kite trade.

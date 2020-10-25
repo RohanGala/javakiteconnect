@@ -1,4 +1,4 @@
-package com.zerodhatech.kiteconnect.kitehttp.exceptions;
+package src.com.zerodhatech.kiteconnect.kitehttp.exceptions;
 
 /**
  * Denotes session is expired.

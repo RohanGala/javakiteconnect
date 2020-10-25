@@ -1,29 +1,71 @@
 package src.com.zerodhatech.kiteconnect;
 
-import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
-import com.zerodhatech.kiteconnect.kitehttp.KiteRequestHandler;
-import com.zerodhatech.kiteconnect.kitehttp.SessionExpiryHook;
-import com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
-import com.zerodhatech.kiteconnect.utils.Constants;
-import com.zerodhatech.models.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.net.Proxy;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.supercsv.cellprocessor.*;
+import org.supercsv.cellprocessor.ParseBool;
+import org.supercsv.cellprocessor.ParseDate;
+import org.supercsv.cellprocessor.ParseDouble;
+import org.supercsv.cellprocessor.ParseInt;
+import org.supercsv.cellprocessor.ParseLong;
 import org.supercsv.cellprocessor.constraint.NotNull;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.io.CsvBeanReader;
 import org.supercsv.io.ICsvBeanReader;
 import org.supercsv.prefs.CsvPreference;
 
-import java.io.*;
-import java.lang.reflect.Type;
-import java.net.Proxy;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
+
+import src.com.zerodhatech.kiteconnect.kitehttp.KiteRequestHandler;
+import src.com.zerodhatech.kiteconnect.kitehttp.SessionExpiryHook;
+import src.com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
+import src.com.zerodhatech.kiteconnect.utils.Constants;
+import src.com.zerodhatech.models.GTT;
+import src.com.zerodhatech.models.GTTParams;
+import src.com.zerodhatech.models.HistoricalData;
+import src.com.zerodhatech.models.Holding;
+import src.com.zerodhatech.models.Instrument;
+import src.com.zerodhatech.models.LTPQuote;
+import src.com.zerodhatech.models.MFHolding;
+import src.com.zerodhatech.models.MFInstrument;
+import src.com.zerodhatech.models.MFOrder;
+import src.com.zerodhatech.models.MFSIP;
+import src.com.zerodhatech.models.Margin;
+import src.com.zerodhatech.models.MarginCalculationData;
+import src.com.zerodhatech.models.MarginCalculationParams;
+import src.com.zerodhatech.models.OHLCQuote;
+import src.com.zerodhatech.models.Order;
+import src.com.zerodhatech.models.OrderParams;
+import src.com.zerodhatech.models.Position;
+import src.com.zerodhatech.models.Profile;
+import src.com.zerodhatech.models.Quote;
+import src.com.zerodhatech.models.TokenSet;
+import src.com.zerodhatech.models.Trade;
+import src.com.zerodhatech.models.TriggerRange;
+import src.com.zerodhatech.models.User;
 
 /**
  * Offers all the functionality like placing order, fetch margins, orderbook, positions, fetch market snap quote.
@@ -526,7 +568,7 @@ public class KiteConnect {
      * */
     public GTT cancelGTT(int gttId) throws IOException, KiteException, JSONException {
         String url = routes.get("gtt.delete").replace(":id", gttId+"");
-        JSONObject response  = kiteRequestHandler.deleteRequest(url, new HashMap<>(), apiKey, accessToken);
+        JSONObject response  = null;//kiteRequestHandler.deleteRequest(url, new HashMap<>(), apiKey, accessToken);
         GTT gtt = new GTT();
         gtt.id = response.getJSONObject("data").getInt("trigger_id");
         return gtt;

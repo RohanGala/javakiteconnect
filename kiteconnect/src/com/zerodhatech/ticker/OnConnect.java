@@ -1,4 +1,4 @@
-package com.zerodhatech.ticker;
+package src.com.zerodhatech.ticker;
 
 /**
  * Callback to listen to com.zerodhatech.ticker websocket connected event.

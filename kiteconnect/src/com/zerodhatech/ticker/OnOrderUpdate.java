@@ -1,6 +1,6 @@
-package com.zerodhatech.ticker;
+package src.com.zerodhatech.ticker;
 
-import com.zerodhatech.models.Order;
+import src.com.zerodhatech.models.Order;
 
 /**
  * Created by sujith on 12/26/17.

@@ -1,6 +1,6 @@
-package com.zerodhatech.ticker;
+package src.com.zerodhatech.ticker;
 
-import com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
+import src.com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
 
 /**
  * Created by sujith on 11/21/17.
