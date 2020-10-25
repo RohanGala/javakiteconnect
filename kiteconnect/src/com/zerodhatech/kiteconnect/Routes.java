@@ -1,4 +1,4 @@
-package com.zerodhatech.kiteconnect;
+package src.com.zerodhatech.kiteconnect;
 
 import java.util.HashMap;
 import java.util.Map;

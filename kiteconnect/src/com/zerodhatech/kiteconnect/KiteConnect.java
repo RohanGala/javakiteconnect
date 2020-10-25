@@ -1,4 +1,4 @@
-package com.zerodhatech.kiteconnect;
+package src.com.zerodhatech.kiteconnect;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
