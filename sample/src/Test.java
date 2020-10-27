@@ -2,6 +2,8 @@ package src;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.json.JSONException;
 
@@ -143,7 +145,12 @@ public class Test {
 
             ArrayList<Long> tokens = new ArrayList<>();
             tokens.add(Long.parseLong("256265"));
-            examples.tickerUsage(kiteConnect, tokens);
+            Map<Long,String> tokenAndName = new HashMap<>();
+            tokenAndName.put(Long.parseLong("12234754"),"CE");
+            tokenAndName.put(Long.parseLong("12232706"),"PE");
+            double CEBuy = 32.9;
+            double CESell = 21.4;
+            examples.tickerUsageRatioSpreads(kiteConnect, tokens,tokenAndName,CEBuy,CESell);
         } catch (KiteException e) {
             System.out.println(e.message+" "+e.code+" "+e.getClass().getName());
         } catch (JSONException e) {
