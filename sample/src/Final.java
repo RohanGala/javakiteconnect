@@ -11,13 +11,13 @@ import com.neovisionaries.ws.client.WebSocketException;
 
 import src.com.zerodhatech.kiteconnect.KiteConnect;
 import src.com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
-import src.com.zerodhatech.kiteconnect.utils.Constants;
 import src.com.zerodhatech.models.OptionDetails;
 
 /**
- * Created by sujith on 7/10/16.
- * This class has example of how to initialize kiteSdk and make rest api calls to place order, get orders, modify order, cancel order,
- * get positions, get holdings, convert positions, get instruments, logout user, get historical data dump, get trades
+ * Change in the following classes:
+ * KiteTicker->wsuri
+ * KiteRequestHandler.createPostRequest  -> for authorization and cookie
+ * 
  */
 public class Final {
 
