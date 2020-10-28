@@ -3,6 +3,7 @@ package src;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.json.JSONException;
@@ -12,6 +13,7 @@ import com.neovisionaries.ws.client.WebSocketException;
 import src.com.zerodhatech.kiteconnect.KiteConnect;
 import src.com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
 import src.com.zerodhatech.models.OptionDetails;
+import src.com.zerodhatech.models.Trade;
 
 /**
  * Change in the following classes:
@@ -57,10 +59,17 @@ public class Final {
             
             
             //examples.testOrders(kiteConnect, tokens,tokenAndName,examples);
-            //examples.tickerUsageInTheMoneySellOutOfMoneyBuy(kiteConnect, tokens,tokenAndName,examples,tokenAndName.get("BUY").getTradingSymbol(),tokenAndName.get("SELL").getTradingSymbol());
+            examples.tickerUsageInTheMoneySellOutOfMoneyBuy(kiteConnect, tokens,tokenAndName,examples,tokenAndName.get("BUY").getTradingSymbol(),tokenAndName.get("SELL").getTradingSymbol());
+            
+            //to get all the trades executed
+            /*List<Trade> trades = examples.getTrades(kiteConnect);
+            for (int i=0; i < trades.size(); i++) {
+                System.out.println(trades.get(i).tradingSymbol+" "+trades.size());
+            }
+            */
             
             //ce buy,ce sell
-            examples.squareOffOrder(kiteConnect, tokens,tokenAndName,examples,318.9,255.15);
+            //examples.squareOffOrder(kiteConnect, tokens,tokenAndName,examples,318.9,255.15);
             
         } catch (KiteException e) {
             System.out.println(e.message+" "+e.code+" "+e.getClass().getName());

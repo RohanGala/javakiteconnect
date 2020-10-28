@@ -90,7 +90,7 @@ public class Test {
 
             examples.getOrders(kiteConnect);
 
-            examples.getOrder(kiteConnect);
+            examples.getOrder(kiteConnect,"201028004069211");
 
             examples.getTrades(kiteConnect);
 
