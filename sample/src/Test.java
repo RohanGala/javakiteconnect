@@ -13,6 +13,7 @@ import src.com.zerodhatech.kiteconnect.KiteConnect;
 import src.com.zerodhatech.kiteconnect.kitehttp.SessionExpiryHook;
 import src.com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
 import src.com.zerodhatech.kiteconnect.utils.Constants;
+import src.com.zerodhatech.models.OptionDetails;
 import src.com.zerodhatech.models.User;
 
 /**
@@ -64,7 +65,7 @@ public class Test {
 
             examples.getMarginCalculation(kiteConnect);
 
-            examples.placeOrder(kiteConnect,"NIFTY20DEC12000CE",210.0,Constants.TRANSACTION_TYPE_BUY);
+            examples.placeOrder(kiteConnect,"NIFTY20DEC12000CE",210.0,Constants.TRANSACTION_TYPE_BUY,75);
 
             examples.modifyOrder(kiteConnect);
 
@@ -144,14 +145,17 @@ public class Test {
 
             examples.logout(kiteConnect);
 
+            Map<String,OptionDetails> tokenAndName = new HashMap<>();
+            tokenAndName.put("BUY",new OptionDetails(Long.parseLong("10322946"), "NIFTY20N0512000PE")); //12300 CE buy
+            tokenAndName.put("SELL",new OptionDetails( Long.parseLong("13733890"),"NIFTY20OCT12000PE")); //12200 CE sell
+            
+            
             ArrayList<Long> tokens = new ArrayList<>();
-            tokens.add(Long.parseLong("256265"));
-            Map<Long,String> tokenAndName = new HashMap<>();
-            tokenAndName.put(Long.parseLong("12234754"),"CE");
-            tokenAndName.put(Long.parseLong("12232706"),"PE");
+            tokens.add(tokenAndName.get("BUY").getInstrumentToken());
+            tokens.add(tokenAndName.get("SELL").getInstrumentToken());
             double CEBuy = 32.9;
             double CESell = 21.4;
-            examples.tickerUsageRatioSpreads(kiteConnect, tokens,tokenAndName,CEBuy,CESell);
+            examples.tickerUsageRatioSpreads(kiteConnect, tokens,tokenAndName,examples,tokenAndName.get("BUY").getTradingSymbol(),tokenAndName.get("SELL").getTradingSymbol());
         } catch (KiteException e) {
             System.out.println(e.message+" "+e.code+" "+e.getClass().getName());
         } catch (JSONException e) {
