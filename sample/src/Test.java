@@ -12,6 +12,7 @@ import com.neovisionaries.ws.client.WebSocketException;
 import src.com.zerodhatech.kiteconnect.KiteConnect;
 import src.com.zerodhatech.kiteconnect.kitehttp.SessionExpiryHook;
 import src.com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
+import src.com.zerodhatech.kiteconnect.utils.Constants;
 import src.com.zerodhatech.models.User;
 
 /**
@@ -63,7 +64,7 @@ public class Test {
 
             examples.getMarginCalculation(kiteConnect);
 
-            examples.placeOrder(kiteConnect);
+            examples.placeOrder(kiteConnect,"NIFTY20DEC12000CE",210.0,Constants.TRANSACTION_TYPE_BUY);
 
             examples.modifyOrder(kiteConnect);
 

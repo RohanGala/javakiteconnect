@@ -29,6 +29,7 @@ import src.com.zerodhatech.models.MFSIP;
 import src.com.zerodhatech.models.Margin;
 import src.com.zerodhatech.models.MarginCalculationData;
 import src.com.zerodhatech.models.MarginCalculationParams;
+import src.com.zerodhatech.models.OptionDetails;
 import src.com.zerodhatech.models.Order;
 import src.com.zerodhatech.models.OrderParams;
 import src.com.zerodhatech.models.Position;
@@ -80,7 +81,7 @@ public class Examples {
     }
 
     /**Place order.*/
-    public void placeOrder(KiteConnect kiteConnect) throws KiteException, IOException {
+    public void placeOrder(KiteConnect kiteConnect,String tradingSymbol,double price,String buysell) throws KiteException, IOException {
         /** Place order method requires a orderParams argument which contains,
          * tradingsymbol, exchange, transaction_type, order_type, quantity, product, price, trigger_price, disclosed_quantity, validity
          * squareoff_value, stoploss_value, trailing_stoploss
@@ -92,16 +93,16 @@ public class Examples {
          * Success of this call implies only order has been placed successfully, not order execution. */
 
         OrderParams orderParams = new OrderParams();
-        orderParams.quantity = 1;
+        orderParams.quantity = 75;
         orderParams.orderType = Constants.ORDER_TYPE_LIMIT;
-        orderParams.tradingsymbol = "ASHOKLEY";
-        orderParams.product = Constants.PRODUCT_CNC;
-        orderParams.exchange = Constants.EXCHANGE_NSE;
-        orderParams.transactionType = Constants.TRANSACTION_TYPE_BUY;
+        orderParams.tradingsymbol = tradingSymbol;
+        orderParams.product = Constants.PRODUCT_MIS;
+        orderParams.exchange = Constants.EXCHANGE_NFO;
+        orderParams.transactionType = buysell;
         orderParams.validity = Constants.VALIDITY_DAY;
-        orderParams.price = 122.2;
+        orderParams.price = price;
         orderParams.triggerPrice = 0.0;
-        orderParams.tag = "myTag"; //tag is optional and it cannot be more than 8 characters and only alphanumeric is allowed
+        orderParams.tag = "NiftyDec"; //tag is optional and it cannot be more than 8 characters and only alphanumeric is allowed
 
         Order order = kiteConnect.placeOrder(orderParams, Constants.VARIETY_REGULAR);
         System.out.println(order.orderId);
@@ -546,6 +547,12 @@ public class Examples {
      * @param CESell 
      * @param CEBuy */
     public void tickerUsageRatioSpreads(KiteConnect kiteConnect, final ArrayList<Long> tokens, final Map<Long, String> tokenAndName, final double CEBuy, final double CESell) throws IOException, WebSocketException, KiteException {
+    	
+    	
+    }
+
+	public void tickerUsageInTheMoneySellOutOfMoneyBuy(final KiteConnect kiteConnect, final ArrayList<Long> tokens,
+			final Map<String, OptionDetails> tokenAndName,final Examples examples,final String CEbuyTradingSymbol,final String CESellTradingSymbol) throws KiteException {
         /** To get live price use websocket connection.
          * It is recommended to use only one websocket connection at any point of time and make sure you stop connection, once user goes out of app.
          * custom url points to new endpoint which can be used till complete Kite Connect 3 migration is done. */
@@ -596,8 +603,12 @@ public class Examples {
         });
 
         tickerProvider.setOnTickerArrivalListener(new OnTicks() {
-        	 double currentCEBuy = 0;
-        	 double currentCESell = 0;
+        	 double currentCEBuySquareOff = 0;
+        	 double currentCESellSqaureOff = 0;
+        	 double actualCEBuy = 0;
+        	 double actualCESell = 0;
+        	 Boolean updateEntryPrices = true;
+        	 Boolean orderPlaced = false;
         	@Override
             public void onTicks(ArrayList<Tick> ticks) {
                 NumberFormat formatter = new DecimalFormat();
@@ -609,28 +620,72 @@ public class Examples {
                 
                 	
                 	for(Tick tick :ticks) {
-                		if(tokenAndName.get(tick.getInstrumentToken()).equals("1")) {
+                		if(tokenAndName.get("BUY").getInstrumentToken().equals(tick.getInstrumentToken())) {
+                			
+                			
 
-                            System.out.println("CE sell First depth->"+tick.getMarketDepth().get("sell").get(0).getPrice()+"("+tick.getMarketDepth().get("sell").get(0).getQuantity()+")");
+                            //System.out.println("CE Buy First depth->"+tick.getMarketDepth().get("buy").get(0).getPrice()+"("+tick.getMarketDepth().get("buy").get(0).getQuantity()+")");
 
-                            System.out.println("CE sell Second depth->"+tick.getMarketDepth().get("sell").get(1).getPrice()+"("+tick.getMarketDepth().get("sell").get(1).getQuantity()+")");
+                            //System.out.println("CE Buy Second depth->"+tick.getMarketDepth().get("buy").get(1).getPrice()+"("+tick.getMarketDepth().get("buy").get(1).getQuantity()+")");
 
-                            System.out.println("CE sell Third depth->"+tick.getMarketDepth().get("sell").get(2).getPrice()+"("+tick.getMarketDepth().get("sell").get(2).getQuantity()+")");
-                            currentCEBuy = tick.getMarketDepth().get("sell").get(2).getPrice();
-                    	
-                		}else if(tokenAndName.get(tick.getInstrumentToken()).equals("2")) {
+                            //System.out.println("CE Buy Third depth->"+tick.getMarketDepth().get("buy").get(2).getPrice()+"("+tick.getMarketDepth().get("buy").get(2).getQuantity()+")");
+                            currentCEBuySquareOff = tick.getMarketDepth().get("buy").get(2).getPrice();
+                            System.out.println("currentCEBuySquareOff->"+currentCEBuySquareOff);
 
-                    		System.out.println("CE Buy First depth->"+tick.getMarketDepth().get("buy").get(0).getPrice()+"("+tick.getMarketDepth().get("buy").get(0).getQuantity()+")");
+                            if(updateEntryPrices) {
+                            	actualCEBuy = tick.getMarketDepth().get("sell").get(1).getPrice();
+                            	System.out.println("actualCEBuy->"+actualCEBuy);
+                            }
+                		}else if(tokenAndName.get("SELL").getInstrumentToken().equals(tick.getInstrumentToken())) {
+
+                    		//System.out.println("CE Sell First depth->"+tick.getMarketDepth().get("sell").get(0).getPrice()+"("+tick.getMarketDepth().get("sell").get(0).getQuantity()+")");
                             
-                            System.out.println("CE Buy Second depth->"+tick.getMarketDepth().get("buy").get(1).getPrice()+"("+tick.getMarketDepth().get("buy").get(1).getQuantity()+")");
+                            //System.out.println("CE Sell Second depth->"+tick.getMarketDepth().get("sell").get(1).getPrice()+"("+tick.getMarketDepth().get("sell").get(1).getQuantity()+")");
                             
-                            System.out.println("CE Buy Third depth->"+tick.getMarketDepth().get("buy").get(2).getPrice()+"("+tick.getMarketDepth().get("buy").get(2).getQuantity()+")");
-                            currentCESell = tick.getMarketDepth().get("buy").get(2).getPrice();
-                    	
+                            //System.out.println("CE Sell Third depth->"+tick.getMarketDepth().get("sell").get(2).getPrice()+"("+tick.getMarketDepth().get("sell").get(2).getQuantity()+")");
+                            currentCESellSqaureOff = tick.getMarketDepth().get("sell").get(2).getPrice();
+                            System.out.println("currentCESellSqaureOff->"+currentCESellSqaureOff);
+                            if(updateEntryPrices) {
+                            	actualCESell = tick.getMarketDepth().get("buy").get(1).getPrice();
+                            	System.out.println("actualCESell->"+actualCESell);
+                            }
                 		}
                 	}
-                	FinalPrice = (currentCEBuy - CEBuy) + (CESell - currentCESell)*2;
+                	System.out.println("actualCESell->"+actualCESell);
+                	System.out.println("actualCESell->"+actualCESell);
+                	FinalPrice = (currentCEBuySquareOff - actualCEBuy) + (actualCESell - currentCESellSqaureOff);
                 	System.out.println("Final Price->"+FinalPrice);
+                	if(FinalPrice > 3 && orderPlaced) {
+                		try {
+                			System.out.println("Placing Order With CE buy Square off="+currentCEBuySquareOff);
+                			System.out.println("Placing Order With CE sell Square off="+currentCESellSqaureOff);
+							examples.placeOrder(kiteConnect,CESellTradingSymbol,currentCESellSqaureOff,Constants.TRANSACTION_TYPE_BUY);
+							examples.placeOrder(kiteConnect,CEbuyTradingSymbol,currentCEBuySquareOff,Constants.TRANSACTION_TYPE_SELL);
+                			orderPlaced = false;
+                			updateEntryPrices = true;
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (Throwable e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+                	}else if (!orderPlaced) {
+                		try {
+                			System.out.println("Placing Order With CE buy="+actualCEBuy);
+                			System.out.println("Placing Order With CE sell="+actualCESell);
+                			examples.placeOrder(kiteConnect,CEbuyTradingSymbol,actualCEBuy,Constants.TRANSACTION_TYPE_BUY);
+							examples.placeOrder(kiteConnect,CESellTradingSymbol,actualCESell,Constants.TRANSACTION_TYPE_SELL);
+                			orderPlaced = true;
+                			updateEntryPrices = false;
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (Throwable e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+                	}
                 	
                     /*System.out.println("last price "+ticks.get(1).getLastTradedPrice());
                     System.out.println("open interest "+formatter.format(ticks.get(1).getOi()));
@@ -674,8 +729,9 @@ public class Examples {
         //tickerProvider.disconnect();
     }
 
-	public void tickerUsageInTheMoneySellOutOfMoneyBuy(KiteConnect kiteConnect, final ArrayList<Long> tokens,
-			final Map<Long, String> tokenAndName, final double CEBuy,final double CESell) throws KiteException {
+	
+	public void squareOffOrder(final KiteConnect kiteConnect, final ArrayList<Long> tokens,
+			final Map<String, OptionDetails> tokenAndName,final Examples examples,final double actualCEBuy,final double actualCESell ) throws KiteException {
         /** To get live price use websocket connection.
          * It is recommended to use only one websocket connection at any point of time and make sure you stop connection, once user goes out of app.
          * custom url points to new endpoint which can be used till complete Kite Connect 3 migration is done. */
@@ -726,8 +782,9 @@ public class Examples {
         });
 
         tickerProvider.setOnTickerArrivalListener(new OnTicks() {
-        	 double currentCEBuy = 0;
-        	 double currentCESell = 0;
+        	 double currentCEBuySquareOff = 0;
+        	 double currentCESellSqaureOff = 0;
+        	 boolean orderExecuted = false;
         	@Override
             public void onTicks(ArrayList<Tick> ticks) {
                 NumberFormat formatter = new DecimalFormat();
@@ -739,28 +796,48 @@ public class Examples {
                 
                 	
                 	for(Tick tick :ticks) {
-                		if(tokenAndName.get(tick.getInstrumentToken()).equals("BUY")) {
+                		if(tokenAndName.get("BUY").getInstrumentToken().equals(tick.getInstrumentToken())) {
 
-                            System.out.println("CE sell First depth->"+tick.getMarketDepth().get("sell").get(0).getPrice()+"("+tick.getMarketDepth().get("sell").get(0).getQuantity()+")");
+                            //System.out.println("CE Buy First depth->"+tick.getMarketDepth().get("buy").get(0).getPrice()+"("+tick.getMarketDepth().get("buy").get(0).getQuantity()+")");
 
-                            System.out.println("CE sell Second depth->"+tick.getMarketDepth().get("sell").get(1).getPrice()+"("+tick.getMarketDepth().get("sell").get(1).getQuantity()+")");
+                            //System.out.println("CE Buy Second depth->"+tick.getMarketDepth().get("buy").get(1).getPrice()+"("+tick.getMarketDepth().get("buy").get(1).getQuantity()+")");
 
-                            System.out.println("CE sell Third depth->"+tick.getMarketDepth().get("sell").get(2).getPrice()+"("+tick.getMarketDepth().get("sell").get(2).getQuantity()+")");
-                            currentCEBuy = tick.getMarketDepth().get("sell").get(2).getPrice();
-                    	
-                		}else if(tokenAndName.get(tick.getInstrumentToken()).equals("SELL")) {
+                            //System.out.println("CE Buy Third depth->"+tick.getMarketDepth().get("buy").get(2).getPrice()+"("+tick.getMarketDepth().get("buy").get(2).getQuantity()+")");
+                            currentCEBuySquareOff = tick.getMarketDepth().get("buy").get(2).getPrice();
+                            System.out.println("currentCEBuySquareOff->"+currentCEBuySquareOff);
 
-                    		System.out.println("CE Buy First depth->"+tick.getMarketDepth().get("buy").get(0).getPrice()+"("+tick.getMarketDepth().get("buy").get(0).getQuantity()+")");
                             
-                            System.out.println("CE Buy Second depth->"+tick.getMarketDepth().get("buy").get(1).getPrice()+"("+tick.getMarketDepth().get("buy").get(1).getQuantity()+")");
+                		}else if(tokenAndName.get("SELL").getInstrumentToken().equals(tick.getInstrumentToken())) {
+
+                    		//System.out.println("CE Sell First depth->"+tick.getMarketDepth().get("sell").get(0).getPrice()+"("+tick.getMarketDepth().get("sell").get(0).getQuantity()+")");
                             
-                            System.out.println("CE Buy Third depth->"+tick.getMarketDepth().get("buy").get(2).getPrice()+"("+tick.getMarketDepth().get("buy").get(2).getQuantity()+")");
-                            currentCESell = tick.getMarketDepth().get("buy").get(2).getPrice();
-                    	
+                            //System.out.println("CE Sell Second depth->"+tick.getMarketDepth().get("sell").get(1).getPrice()+"("+tick.getMarketDepth().get("sell").get(1).getQuantity()+")");
+                            
+                            //System.out.println("CE Sell Third depth->"+tick.getMarketDepth().get("sell").get(2).getPrice()+"("+tick.getMarketDepth().get("sell").get(2).getQuantity()+")");
+                            currentCESellSqaureOff = tick.getMarketDepth().get("sell").get(2).getPrice();
+                            System.out.println("currentCESellSqaureOff->"+currentCESellSqaureOff);
+                            
                 		}
                 	}
-                	FinalPrice = (currentCEBuy - CEBuy) + (CESell - currentCESell);
+                	System.out.println("actualCESell->"+actualCESell);
+                	System.out.println("actualCEBuy->"+actualCEBuy);
+                	FinalPrice = (currentCEBuySquareOff - actualCEBuy) + (actualCESell - currentCESellSqaureOff);
                 	System.out.println("Final Price->"+FinalPrice);
+                	if(FinalPrice > 3 && !orderExecuted) {
+                		try {
+                			System.out.println("Placing Order With CE buy Square off="+currentCEBuySquareOff);
+                			System.out.println("Placing Order With CE sell Square off="+currentCESellSqaureOff);
+							//examples.placeOrder(kiteConnect,tokenAndName.get("SELL").getTradingSymbol(),currentCESellSqaureOff,Constants.TRANSACTION_TYPE_BUY);
+							//examples.placeOrder(kiteConnect,tokenAndName.get("BUY").getTradingSymbol(),currentCEBuySquareOff,Constants.TRANSACTION_TYPE_SELL);
+							orderExecuted = true;
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (Throwable e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+                	}
                 	
                     /*System.out.println("last price "+ticks.get(1).getLastTradedPrice());
                     System.out.println("open interest "+formatter.format(ticks.get(1).getOi()));
@@ -796,6 +873,130 @@ public class Examples {
          * For getting last traded price, last traded quantity, average price, volume traded today, total sell quantity and total buy quantity, open, high, low, close, change, use modeQuote
          * For getting all data with depth, use modeFull*/
         tickerProvider.setMode(tokens, KiteTicker.modeLTP);
+
+        // Unsubscribe for a token.
+       // tickerProvider.unsubscribe(tokens);
+
+        // After using com.zerodhatech.com.zerodhatech.ticker, close websocket connection.
+        //tickerProvider.disconnect();
+    }
+	
+	public void testOrders(final KiteConnect kiteConnect, final ArrayList<Long> tokens,
+			final Map<String, OptionDetails> tokenAndName,final Examples examples) throws KiteException {
+        /** To get live price use websocket connection.
+         * It is recommended to use only one websocket connection at any point of time and make sure you stop connection, once user goes out of app.
+         * custom url points to new endpoint which can be used till complete Kite Connect 3 migration is done. */
+        final KiteTicker tickerProvider = new KiteTicker(null,null);
+
+        tickerProvider.setOnConnectedListener(new OnConnect() {
+            @Override
+            public void onConnected() {
+                /** Subscribe ticks for token.
+                 * By default, all tokens are subscribed for modeQuote.
+                 * */
+                tickerProvider.subscribe(tokens);
+                tickerProvider.setMode(tokens, KiteTicker.modeFull);
+            }
+        });
+
+        tickerProvider.setOnDisconnectedListener(new OnDisconnect() {
+            @Override
+            public void onDisconnected() {
+                // your code goes here
+            }
+        });
+
+        /** Set listener to get order updates.*/
+        tickerProvider.setOnOrderUpdateListener(new OnOrderUpdate() {
+            @Override
+            public void onOrderUpdate(Order order) {
+                System.out.println("order update "+order.orderId);
+            }
+        });
+
+        /** Set error listener to listen to errors.*/
+        tickerProvider.setOnErrorListener(new OnError() {
+            @Override
+            public void onError(Exception exception) {
+                //handle here.
+            }
+
+            @Override
+            public void onError(KiteException kiteException) {
+                //handle here.
+            }
+
+            @Override
+            public void onError(String error) {
+                System.out.println(error);
+            }
+        });
+
+        tickerProvider.setOnTickerArrivalListener(new OnTicks() {
+        	
+        	 Boolean orderPlaced = false;
+        	double actualCEBuy=0.0;
+        	@Override
+            public void onTicks(ArrayList<Tick> ticks) {
+                System.out.println("ticks size "+ticks.size());
+               
+                
+                if(ticks.size() > 0) {
+                
+                	
+                	for(Tick tick :ticks) {
+                		if(tokenAndName.get("BUY").getInstrumentToken().equals(tick.getInstrumentToken())) {
+
+                            
+                            	actualCEBuy = tick.getMarketDepth().get("sell").get(1).getPrice();
+                            	actualCEBuy = actualCEBuy-40.0;
+                            	System.out.println("actualCEBuy->"+actualCEBuy);
+                            
+                		}
+                	}
+                	
+                		try {
+                			System.out.println("Placing Order With CE buy="+actualCEBuy);
+                			if(!orderPlaced) {
+                				examples.placeOrder(kiteConnect,tokenAndName.get("BUY").getTradingSymbol(),actualCEBuy,Constants.TRANSACTION_TYPE_BUY);
+                				orderPlaced = true;;
+                			}
+							
+                			
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (Throwable e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+                	
+                	
+                  
+                    
+                }
+            }
+        });
+        // Make sure this is called before calling connect.
+        tickerProvider.setTryReconnection(true);
+        //maximum retries and should be greater than 0
+        tickerProvider.setMaximumRetries(10);
+        //set maximum retry interval in seconds
+        tickerProvider.setMaximumRetryInterval(30);
+
+        /** connects to com.zerodhatech.com.zerodhatech.ticker server for getting live quotes*/
+        tickerProvider.connect();
+
+        /** You can check, if websocket connection is open or not using the following method.*/
+        boolean isConnected = tickerProvider.isConnectionOpen();
+        System.out.println(isConnected);
+
+        /** set mode is used to set mode in which you need tick for list of tokens.
+         * Ticker allows three modes, modeFull, modeQuote, modeLTP.
+         * For getting only last traded price, use modeLTP
+         * For getting last traded price, last traded quantity, average price, volume traded today, total sell quantity and total buy quantity, open, high, low, close, change, use modeQuote
+         * For getting all data with depth, use modeFull*/
+        //tickerProvider.setMode(tokens, KiteTicker.modeLTP);
 
         // Unsubscribe for a token.
        // tickerProvider.unsubscribe(tokens);

@@ -49,7 +49,7 @@ import src.com.zerodhatech.models.Tick;
  */
 public class KiteTicker {
 
-    private String wsuri ="wss://ws.zerodha.com/?api_key=kitefront&user_id=PR5116&enctoken=Mo5nTTqLEKnVWoIsWwnBJIhsLPDqKfDwaDCQxNpAejtaeXn7HbKC0X3nxMI9G0LSpGakJAsaK5Hs991m%2BwaioLUkkmeYkg%3D%3D&uid=1603628095438&user-agent=kite3-web&version=2.6.1";;
+    private String wsuri ="wss://ws.zerodha.com/?api_key=kitefront&user_id=PR5116&enctoken=OTD%2F8o31Rc95cFH4oOs%2FnifRezgVI6r%2B1gyT1fWMchRqpj0Zf56Pe2RySexQl4vcGWml9MIrOtKDQBfDsKsGjT%2B6%2Be7SLw%3D%3D&uid=1603869643885&user-agent=kite3-web&version=2.6.1";;
     private OnTicks onTickerArrivalListener;
     private OnConnect onConnectedListener;
     private OnDisconnect onDisconnectedListener;

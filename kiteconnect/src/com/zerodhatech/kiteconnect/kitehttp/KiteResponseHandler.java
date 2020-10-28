@@ -59,7 +59,9 @@ public class KiteResponseHandler {
 
             case "GeneralException": return new GeneralException(jsonObject.getString("message"), code);
 
-            case "InputException": return new InputException(jsonObject.getString("message"), code);
+            case "InputException": 
+            	System.out.println(jsonObject.getString("message")+code);
+            	return new InputException(jsonObject.getString("message"), code);
 
             case "OrderException": return new OrderException(jsonObject.getString("message"), code);
 
