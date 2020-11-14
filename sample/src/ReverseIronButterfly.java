@@ -3,7 +3,6 @@ package src;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.json.JSONException;
@@ -13,7 +12,6 @@ import com.neovisionaries.ws.client.WebSocketException;
 import src.com.zerodhatech.kiteconnect.KiteConnect;
 import src.com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
 import src.com.zerodhatech.models.OptionDetails;
-import src.com.zerodhatech.models.Trade;
 
 /**
  * Change in the following classes:
@@ -21,45 +19,38 @@ import src.com.zerodhatech.models.Trade;
  * KiteRequestHandler.createPostRequest  -> for authorization and cookie
  * 
  */
-public class Final {
+public class ReverseIronButterfly {
 
     public static void main(String[] args) throws IOException, KiteException, WebSocketException{
     	 KiteConnect kiteConnect = new KiteConnect("");
 
 
          Examples examples = new Examples();
+         ReverseIronButterflyImpl rib =new ReverseIronButterflyImpl();
     	try {
-    		 /*
-            ArrayList<Long> tokens = new ArrayList<>();
-            tokens.add(Long.parseLong("12234754"));
-            tokens.add(Long.parseLong("12232706"));
-            Map<Long,String> tokenAndName = new HashMap<>();
-            tokenAndName.put(Long.parseLong("12234754"),"2"); //13000 CE 
-            tokenAndName.put(Long.parseLong("12232706"),"1"); //12800 CE
-            double CEBuy = 30.9;
-            double CESell = 19.65;
-            examples.tickerUsageRatioSpreads(kiteConnect, tokens,tokenAndName,CEBuy,CESell);*/
-            
-    		//examples.placeOrder(kiteConnect,"NIFTY20DEC12000CE",210.0,Constants.TRANSACTION_TYPE_BUY);
-           
-    		//Placing orders
+    		
     		
     		
     		
             
     		
             Map<String,OptionDetails> tokenAndName = new HashMap<>();
-            tokenAndName.put("BUY",new OptionDetails(Long.parseLong("10322946"), "NIFTY20N0512000PE")); //12300 CE buy
-            tokenAndName.put("SELL",new OptionDetails( Long.parseLong("13733890"),"NIFTY20OCT12000PE")); //12200 CE sell
+            tokenAndName.put("SELLIN",new OptionDetails(Long.parseLong("12224514"), "NIFTY20NOV12200CE")); //12200 CE sell
+            tokenAndName.put("BUY",new OptionDetails( Long.parseLong("12225538"),"NIFTY20NOV12300CE")); //12300 CE buy
+            tokenAndName.put("SELLOUT",new OptionDetails(Long.parseLong("12226562"), "NIFTY20NOV12400CE")); //12200 CE sell
             
             
             ArrayList<Long> tokens = new ArrayList<>();
+            tokens.add(tokenAndName.get("SELLIN").getInstrumentToken());
             tokens.add(tokenAndName.get("BUY").getInstrumentToken());
-            tokens.add(tokenAndName.get("SELL").getInstrumentToken());
+            tokens.add(tokenAndName.get("SELLOUT").getInstrumentToken());
+            
+            // execute 1:2:1
+            rib.executeReverseIronButterfly121(kiteConnect, tokens,tokenAndName,examples,tokenAndName.get("SELLIN").getTradingSymbol(),tokenAndName.get("BUY").getTradingSymbol(),tokenAndName.get("SELLOUT").getTradingSymbol());
             
             
             //examples.testOrders(kiteConnect, tokens,tokenAndName,examples);
-            //examples.tickerUsageInTheMoneySellOutOfMoneyBuy(kiteConnect, tokens,tokenAndName,examples,tokenAndName.get("BUY").getTradingSymbol(),tokenAndName.get("SELL").getTradingSymbol());
+            //examples.tickerUsageRatioSpreads(kiteConnect, tokens,tokenAndName,examples,tokenAndName.get("BUY").getTradingSymbol(),tokenAndName.get("SELL").getTradingSymbol());
             
             //to get all the trades executed
             /*List<Trade> trades = examples.getTrades(kiteConnect);
@@ -68,8 +59,9 @@ public class Final {
             }
             */
             
-            //ce buy,ce sell
-            examples.squareOffOrder(kiteConnect, tokens,tokenAndName,examples,371.2,318);
+          //ce buy,ce sell
+            
+            //examples.squareOffOrderRatioSpreads(kiteConnect, tokens,tokenAndName,examples,103.2,60.55);
             
         } catch (KiteException e) {
             System.out.println(e.message+" "+e.code+" "+e.getClass().getName());

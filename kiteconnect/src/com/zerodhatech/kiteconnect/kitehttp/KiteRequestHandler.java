@@ -27,6 +27,7 @@ public class KiteRequestHandler {
 
     private OkHttpClient client;
     private String USER_AGENT = "javakiteconnect/3.0.0";
+    private String authorizationToken = "enctoken 2C/RxsoxpYUgFgnH9cSajPZtnA959n/ftzNPpy+OYzJ7o2IPvauizS69iHmfrmFWIPtcIua6GLgIvdOCXwtgG1dK/vSeQg==";
 
     /** Initialize request handler.
      * @param proxy to be set for making requests.*/
@@ -181,9 +182,11 @@ public class KiteRequestHandler {
      * */
     public Request createGetRequest(String url, String apiKey, String accessToken) {
     	
+    	
+
         HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
         return new Request.Builder().url(httpBuilder.build()).header("User-Agent", USER_AGENT)
-        		.header("X-Kite-Version", "2.6.1").header("x-kite-userid", "PR5116").header("authorization","enctoken OTD/8o31Rc95cFH4oOs/nifRezgVI6r+1gyT1fWMchRqpj0Zf56Pe2RySexQl4vcGWml9MIrOtKDQBfDsKsGjT+6+e7SLw==")
+        		.header("X-Kite-Version", "2.6.1").header("x-kite-userid", "PR5116").header("authorization",authorizationToken)
         		.header("cookie", "_ga=GA1.2.370087298.1588256450; WZRK_G=c6fe6b8f8b1d47f7a05174eb79f4e52e; mp_7b1e06d0192feeac86689b5599a4b024_mixpanel=%7B%22distinct_id%22%3A%20%2258203f0e081e8e6ab1e47bdb%22%2C%22%24device_id%22%3A%20%221728eee483f0-0de0b08dad0176-1b3a6256-13c680-1728eee4840288%22%2C%22%24user_id%22%3A%20%2258203f0e081e8e6ab1e47bdb%22%2C%22%24initial_referrer%22%3A%20%22%24direct%22%2C%22%24initial_referring_domain%22%3A%20%22%24direct%22%7D; __cfduid=daad658f726166cab5741081ce2964de21602938735; kf_session=x53faP91FD3dti5cQ7bnvsCgT3pMNqTb; user_id=PR5116; public_token=CsarApVvWd7NmunUalcrjtu7MvxvBPOu; enctoken=OTD/8o31Rc95cFH4oOs/nifRezgVI6r+1gyT1fWMchRqpj0Zf56Pe2RySexQl4vcGWml9MIrOtKDQBfDsKsGjT+6+e7SLw==; _gid=GA1.2.1763442148.1603862735")
         		.build();
     }
@@ -228,11 +231,13 @@ public class KiteRequestHandler {
         for(Map.Entry<String, Object> entry: params.entrySet()){
             builder.add(entry.getKey(), entry.getValue().toString());
         }
-        
+
+
+
 
 
         RequestBody requestBody = builder.build();
-        Request request = new Request.Builder().url(url).post(requestBody).header("User-Agent", USER_AGENT).header("X-Kite-Version", "2.6.1").header("x-kite-userid", "PR5116").header("authorization","enctoken OTD/8o31Rc95cFH4oOs/nifRezgVI6r+1gyT1fWMchRqpj0Zf56Pe2RySexQl4vcGWml9MIrOtKDQBfDsKsGjT+6+e7SLw==")
+        Request request = new Request.Builder().url(url).post(requestBody).header("User-Agent", USER_AGENT).header("X-Kite-Version", "2.6.1").header("x-kite-userid", "PR5116").header("authorization",authorizationToken)
         		.header("cookie", "_ga=GA1.2.370087298.1588256450; WZRK_G=c6fe6b8f8b1d47f7a05174eb79f4e52e; mp_7b1e06d0192feeac86689b5599a4b024_mixpanel=%7B%22distinct_id%22%3A%20%2258203f0e081e8e6ab1e47bdb%22%2C%22%24device_id%22%3A%20%221728eee483f0-0de0b08dad0176-1b3a6256-13c680-1728eee4840288%22%2C%22%24user_id%22%3A%20%2258203f0e081e8e6ab1e47bdb%22%2C%22%24initial_referrer%22%3A%20%22%24direct%22%2C%22%24initial_referring_domain%22%3A%20%22%24direct%22%7D; __cfduid=daad658f726166cab5741081ce2964de21602938735; kf_session=x53faP91FD3dti5cQ7bnvsCgT3pMNqTb; user_id=PR5116; public_token=CsarApVvWd7NmunUalcrjtu7MvxvBPOu; enctoken=OTD/8o31Rc95cFH4oOs/nifRezgVI6r+1gyT1fWMchRqpj0Zf56Pe2RySexQl4vcGWml9MIrOtKDQBfDsKsGjT+6+e7SLw==; _gid=GA1.2.1763442148.1603862735").build();
         return request;
     }
