@@ -18,7 +18,7 @@ import src.com.zerodhatech.models.OptionDetails;
  * KiteRequestHandler.createPostRequest -> for authorization and cookie
  * 
  */
-public class SellCurrentExpiryBuyNextExpiryIntradayReliance {
+public class SellCurrentExpiryBuyNextExpiryIntradayRELIANCE {
 
 	public static void main(String[] args) throws IOException, KiteException, WebSocketException {
 		KiteConnect kiteConnect = new KiteConnect("");
