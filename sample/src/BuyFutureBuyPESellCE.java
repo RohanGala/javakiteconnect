@@ -21,27 +21,28 @@ import src.com.zerodhatech.models.Position;
  * KiteRequestHandler.createPostRequest -> for authorization and cookie
  * 
  */
-public class RatioSpreads {
+public class BuyFutureBuyPESellCE {
 
 	public static void main(String[] args) throws IOException, KiteException, WebSocketException {
 		KiteConnect kiteConnect = new KiteConnect("");
 
 		Examples examples = new Examples();
-		RatioSpreadImpl rsi = new RatioSpreadImpl();
+		BuyFutureBuyPESellCEImpl rsi = new BuyFutureBuyPESellCEImpl();
 		try {
 
 			Map<String, OptionDetails> tokenAndName = new HashMap<>();
-			tokenAndName.put("BUY", new OptionDetails(Long.parseLong("12207362"), "NIFTY20NOV10700PE")); // 12200 CE buy
-			tokenAndName.put("SELL", new OptionDetails(Long.parseLong("12205314"), "NIFTY20NOV10500PE")); // 12400 CE
-																											// sell
+			tokenAndName.put("BUYFUT", new OptionDetails(Long.parseLong("16492034"), "NIFTY21APRFUT"));
+			tokenAndName.put("BUYOPTION", new OptionDetails(Long.parseLong("15266050"), "NIFTY2140114600PE")); 
+			tokenAndName.put("SELLOPTION", new OptionDetails(Long.parseLong("15265794"), "NIFTY2140114600CE")); 
 
 			ArrayList<Long> tokens = new ArrayList<>();
-			tokens.add(tokenAndName.get("BUY").getInstrumentToken());
-			tokens.add(tokenAndName.get("SELL").getInstrumentToken());
+			tokens.add(tokenAndName.get("BUYFUT").getInstrumentToken());
+			tokens.add(tokenAndName.get("BUYOPTION").getInstrumentToken());
+			tokens.add(tokenAndName.get("SELLOPTION").getInstrumentToken());
 
 			// first execute 1:2
-			 //rsi.executeRatioSpreads11(kiteConnect,
-			 //tokens,tokenAndName,examples,tokenAndName.get("BUY").getTradingSymbol(),tokenAndName.get("SELL").getTradingSymbol());
+			 rsi.executeBuySell11(kiteConnect,
+			 tokens,tokenAndName,examples,tokenAndName.get("BUYFUT").getTradingSymbol(),tokenAndName.get("BUYOPTION").getTradingSymbol(),tokenAndName.get("SELLOPTION").getTradingSymbol());
 
 			// examples.testOrders(kiteConnect, tokens,tokenAndName,examples);
 			// examples.tickerUsageRatioSpreads(kiteConnect,
@@ -68,8 +69,10 @@ public class RatioSpreads {
 					}
 				}
 			}
+			//buyPrice=237.25;
+			//sellPrice=236.15;
 
-			examples.squareOffOrderRatioSpreads(kiteConnect, tokens, tokenAndName, examples, buyPrice, sellPrice);
+			rsi.squareOffOrder(kiteConnect, tokens, tokenAndName, examples, buyPrice, sellPrice);
 
 		} catch (KiteException e) {
 			System.out.println(e.message + " " + e.code + " " + e.getClass().getName());

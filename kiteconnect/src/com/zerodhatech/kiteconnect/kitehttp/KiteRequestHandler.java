@@ -25,9 +25,13 @@ import src.com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
  */
 public class KiteRequestHandler {
 
+	
+
     private OkHttpClient client;
     private String USER_AGENT = "javakiteconnect/3.0.0";
-    private String authorizationToken = "enctoken 2C/RxsoxpYUgFgnH9cSajPZtnA959n/ftzNPpy+OYzJ7o2IPvauizS69iHmfrmFWIPtcIua6GLgIvdOCXwtgG1dK/vSeQg==";
+    
+
+    private String authorizationToken = "enctoken: aimagX8VpjAZ0g0ygstduoTEr5a4NLiPgaX1mHO2DeU1oX+45PDV2JlpIT/wZtbkou5bpd/qQN9lMJaFmWSxgnPt70vV5Q==";
 
     /** Initialize request handler.
      * @param proxy to be set for making requests.*/
@@ -72,7 +76,7 @@ public class KiteRequestHandler {
      * @throws KiteException is thrown for all Kite Trade related errors.
      * @throws JSONException is thrown for parsing errors.*/
     public JSONObject getRequest(String url, Map<String, Object> params, String apiKey, String accessToken) throws IOException, KiteException, JSONException {
-        Request request = createGetRequest(url, params, apiKey, accessToken);
+        Request request = createGetRequest(url, params,apiKey, accessToken);
         Response response = client.newCall(request).execute();
         String body = response.body().string();
         return new KiteResponseHandler().handle(response, body);
@@ -202,7 +206,10 @@ public class KiteRequestHandler {
         for(Map.Entry<String, Object> entry: params.entrySet()){
             httpBuilder.addQueryParameter(entry.getKey(), entry.getValue().toString());
         }
-        return new Request.Builder().url(httpBuilder.build()).header("User-Agent", USER_AGENT).header("X-Kite-Version", "3").header("Authorization", "token "+apiKey+":"+accessToken).build();
+        return new Request.Builder().url(httpBuilder.build()).header("User-Agent", USER_AGENT)
+        		.header("X-Kite-Version", "2.8.0").header("x-kite-userid", "ZG8743").header("authorization",authorizationToken)
+        		.header("cookie", "_ga=GA1.2.370087298.1588256450; WZRK_G=c6fe6b8f8b1d47f7a05174eb79f4e52e; mp_7b1e06d0192feeac86689b5599a4b024_mixpanel=%7B%22distinct_id%22%3A%20%2258203f0e081e8e6ab1e47bdb%22%2C%22%24device_id%22%3A%20%221728eee483f0-0de0b08dad0176-1b3a6256-13c680-1728eee4840288%22%2C%22%24user_id%22%3A%20%2258203f0e081e8e6ab1e47bdb%22%2C%22%24initial_referrer%22%3A%20%22%24direct%22%2C%22%24initial_referring_domain%22%3A%20%22%24direct%22%7D; __cfduid=daad658f726166cab5741081ce2964de21602938735; kf_session=x53faP91FD3dti5cQ7bnvsCgT3pMNqTb; user_id=PR5116; public_token=CsarApVvWd7NmunUalcrjtu7MvxvBPOu; enctoken=OTD/8o31Rc95cFH4oOs/nifRezgVI6r+1gyT1fWMchRqpj0Zf56Pe2RySexQl4vcGWml9MIrOtKDQBfDsKsGjT+6+e7SLw==; _gid=GA1.2.1763442148.1603862735")
+        		.build();
     }
 
     /** Creates a GET request.

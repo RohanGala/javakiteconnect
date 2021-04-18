@@ -1159,7 +1159,7 @@ public class Examples {
                 	System.out.println("actualCEBuy->"+actualCEBuy);
                 	FinalPrice = (currentCEBuySquareOff - actualCEBuy) + (actualCESell - currentCESellSqaureOff)*2;
                 	System.out.println("Final Price->"+FinalPrice);
-                	if(FinalPrice > 3.45 && !orderExecuted) {
+                	if(FinalPrice > 5.1 && !orderExecuted) {
                 		try {
                 			System.out.println("Placing Order With CE buy Square off="+currentCEBuySquareOff);
                 			System.out.println("Placing Order With CE sell Square off="+currentCESellSqaureOff);

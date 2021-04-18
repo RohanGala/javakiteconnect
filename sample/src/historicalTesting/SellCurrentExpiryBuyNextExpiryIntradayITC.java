@@ -1,7 +1,6 @@
-package src;
+package src.historicalTesting;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +10,7 @@ import org.json.JSONException;
 
 import com.neovisionaries.ws.client.WebSocketException;
 
+import src.Examples;
 import src.com.zerodhatech.kiteconnect.KiteConnect;
 import src.com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
 import src.com.zerodhatech.models.OptionDetails;
@@ -21,27 +21,30 @@ import src.com.zerodhatech.models.Position;
  * KiteRequestHandler.createPostRequest -> for authorization and cookie
  * 
  */
-public class RatioSpreads {
+public class SellCurrentExpiryBuyNextExpiryIntradayITC {
 
 	public static void main(String[] args) throws IOException, KiteException, WebSocketException {
 		KiteConnect kiteConnect = new KiteConnect("");
 
 		Examples examples = new Examples();
-		RatioSpreadImpl rsi = new RatioSpreadImpl();
+		SellCurrentExpiryBuyNextExpiryIntradayNiftyImpl rsi = new SellCurrentExpiryBuyNextExpiryIntradayNiftyImpl();
 		try {
 
 			Map<String, OptionDetails> tokenAndName = new HashMap<>();
-			tokenAndName.put("BUY", new OptionDetails(Long.parseLong("12207362"), "NIFTY20NOV10700PE")); // 12200 CE buy
-			tokenAndName.put("SELL", new OptionDetails(Long.parseLong("12205314"), "NIFTY20NOV10500PE")); // 12400 CE
-																											// sell
+			tokenAndName.put("SPOT", new OptionDetails(Long.parseLong("424961"), "ITC")); 
+
+			tokenAndName.put("BUY", new OptionDetails(Long.parseLong("16568066"), "ITC21APRFUT")); 
+			tokenAndName.put("SELL", new OptionDetails(Long.parseLong("15728130"), "ITC21MAYFUT")); 
 
 			ArrayList<Long> tokens = new ArrayList<>();
 			tokens.add(tokenAndName.get("BUY").getInstrumentToken());
 			tokens.add(tokenAndName.get("SELL").getInstrumentToken());
+			tokens.add(tokenAndName.get("SPOT").getInstrumentToken());
+
 
 			// first execute 1:2
-			 //rsi.executeRatioSpreads11(kiteConnect,
-			 //tokens,tokenAndName,examples,tokenAndName.get("BUY").getTradingSymbol(),tokenAndName.get("SELL").getTradingSymbol());
+			 rsi.executeBuySell11(kiteConnect,
+			 tokens,tokenAndName,examples,tokenAndName.get("BUY").getTradingSymbol(),tokenAndName.get("SELL").getTradingSymbol(),tokenAndName.get("SPOT").getTradingSymbol(),"ITCBUYSELLFUTURES");
 
 			// examples.testOrders(kiteConnect, tokens,tokenAndName,examples);
 			// examples.tickerUsageRatioSpreads(kiteConnect,
@@ -68,8 +71,10 @@ public class RatioSpreads {
 					}
 				}
 			}
+			//buyPrice=237.25;
+			//sellPrice=236.15;
 
-			examples.squareOffOrderRatioSpreads(kiteConnect, tokens, tokenAndName, examples, buyPrice, sellPrice);
+			rsi.squareOffOrder(kiteConnect, tokens, tokenAndName, examples, buyPrice, sellPrice);
 
 		} catch (KiteException e) {
 			System.out.println(e.message + " " + e.code + " " + e.getClass().getName());

@@ -21,18 +21,18 @@ import src.com.zerodhatech.models.Position;
  * KiteRequestHandler.createPostRequest -> for authorization and cookie
  * 
  */
-public class RatioSpreads {
+public class SellCurrentExpiryBuyNextExpiry {
 
 	public static void main(String[] args) throws IOException, KiteException, WebSocketException {
 		KiteConnect kiteConnect = new KiteConnect("");
 
 		Examples examples = new Examples();
-		RatioSpreadImpl rsi = new RatioSpreadImpl();
+		SellCurrentExpiryBuyNextExpiryImpl rsi = new SellCurrentExpiryBuyNextExpiryImpl();
 		try {
 
 			Map<String, OptionDetails> tokenAndName = new HashMap<>();
-			tokenAndName.put("BUY", new OptionDetails(Long.parseLong("12207362"), "NIFTY20NOV10700PE")); // 12200 CE buy
-			tokenAndName.put("SELL", new OptionDetails(Long.parseLong("12205314"), "NIFTY20NOV10500PE")); // 12400 CE
+			tokenAndName.put("BUY", new OptionDetails(Long.parseLong("11984386"), "NIFTY20DECFUT")); // 12200 CE buy
+			tokenAndName.put("SELL", new OptionDetails(Long.parseLong("12762370"), "NIFTY21JANFUT")); // 12400 CE
 																											// sell
 
 			ArrayList<Long> tokens = new ArrayList<>();
@@ -40,8 +40,8 @@ public class RatioSpreads {
 			tokens.add(tokenAndName.get("SELL").getInstrumentToken());
 
 			// first execute 1:2
-			 //rsi.executeRatioSpreads11(kiteConnect,
-			 //tokens,tokenAndName,examples,tokenAndName.get("BUY").getTradingSymbol(),tokenAndName.get("SELL").getTradingSymbol());
+			 rsi.executeBuySell11(kiteConnect,
+			 tokens,tokenAndName,examples,tokenAndName.get("BUY").getTradingSymbol(),tokenAndName.get("SELL").getTradingSymbol());
 
 			// examples.testOrders(kiteConnect, tokens,tokenAndName,examples);
 			// examples.tickerUsageRatioSpreads(kiteConnect,
@@ -68,8 +68,10 @@ public class RatioSpreads {
 					}
 				}
 			}
+			//buyPrice=237.25;
+			//sellPrice=236.15;
 
-			examples.squareOffOrderRatioSpreads(kiteConnect, tokens, tokenAndName, examples, buyPrice, sellPrice);
+			rsi.squareOffOrder(kiteConnect, tokens, tokenAndName, examples, buyPrice, sellPrice);
 
 		} catch (KiteException e) {
 			System.out.println(e.message + " " + e.code + " " + e.getClass().getName());
