@@ -337,7 +337,7 @@ public class SellCurrentExpiryBuyNextExpiryIntradayNiftyImpl {
 			csvFilePrinter = new CSVPrinter(fileWriter, csvFileFormat);
 			// HEADER
 			csvFilePrinter.printRecord(record);
-			System.out.println("NIFTY.csv written successfully on disk."+record);
+			System.out.println(fileName+".csv written successfully on disk."+record);
 		}catch(Exception e) {
 			e.printStackTrace();
 		}finally {

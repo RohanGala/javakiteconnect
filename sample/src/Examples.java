@@ -1,5 +1,7 @@
 package src;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -10,6 +12,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import org.json.JSONObject;
 
 import com.neovisionaries.ws.client.WebSocketException;
@@ -1358,4 +1362,36 @@ public class Examples {
        
         return historicalData.dataArrayList;
     }
+    
+    public void writeinCSV(List<Object> record, String fileName){
+
+
+		String NEW_LINE_SEPARATOR = "\n";
+
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+		CSVPrinter csvFilePrinter = null;
+		FileWriter fileWriter =null;
+
+		try {
+			fileWriter = new FileWriter("/Users/rohangala/Documents/AlgoTrading/javakiteconnect/sample/src/"+fileName+".csv",true); 
+			CSVFormat csvFileFormat = CSVFormat.DEFAULT.withRecordSeparator(NEW_LINE_SEPARATOR);
+			csvFilePrinter = new CSVPrinter(fileWriter, csvFileFormat);
+			// HEADER
+			csvFilePrinter.printRecord(record);
+			System.out.println(fileName+".csv written successfully on disk."+record);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				fileWriter.flush();
+				fileWriter.close();
+				csvFilePrinter.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+	}
 }
