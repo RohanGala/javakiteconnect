@@ -1340,4 +1340,22 @@ public class Examples {
         // After using com.zerodhatech.com.zerodhatech.ticker, close websocket connection.
         //tickerProvider.disconnect();
     }
+	
+	/** Get historical data for an instrument.*/
+    public List<HistoricalData> getHistoricalData(KiteConnect kiteConnect,String fromDateInString, String  toDateInString, String token, String interval) throws KiteException, IOException {
+        /** Get historical data dump, requires from and to date, intrument token, interval, continuous (for expired F&O contracts), oi (open interest)
+         * returns historical data object which will have list of historical data inside the object.*/
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date from =  new Date();
+        Date to = new Date();
+        try {
+            from = formatter.parse(fromDateInString);
+            to = formatter.parse(toDateInString);
+        }catch (ParseException e) {
+            e.printStackTrace();
+        }
+        HistoricalData historicalData = kiteConnect.getHistoricalData(from, to, token, interval, false, true);
+       
+        return historicalData.dataArrayList;
+    }
 }
